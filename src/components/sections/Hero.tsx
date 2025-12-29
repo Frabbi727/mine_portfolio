@@ -1,10 +1,41 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { Profile } from '@/types/database'
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
 
 export default function Hero() {
+    const [profile, setProfile] = useState<Profile | null>(null)
+
+    useEffect(() => {
+        fetchProfile()
+    }, [])
+
+    const fetchProfile = async () => {
+        const supabase = createClient()
+        const { data } = await supabase
+            .from('profile')
+            .select('*')
+            .single()
+
+        if (data) {
+            setProfile(data)
+        }
+    }
+
     const scrollToSection = (id: string) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    // Get initials from name
+    const getInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map(n => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2)
     }
 
     return (
@@ -19,9 +50,17 @@ export default function Hero() {
                 {/* Profile Image */}
                 <div className="mb-8 inline-block">
                     <div className="w-32 h-32 rounded-full glass p-1 mx-auto">
-                        <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl font-bold">
-                            YN
-                        </div>
+                        {profile?.avatar_url ? (
+                            <img
+                                src={profile.avatar_url}
+                                alt={profile.full_name}
+                                className="w-full h-full rounded-full object-cover"
+                            />
+                        ) : (
+                            <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl font-bold text-white">
+                                {profile ? getInitials(profile.full_name) : 'YN'}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -32,18 +71,17 @@ export default function Hero() {
 
                 {/* Name */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-4">
-                    <span className="gradient-text">Your Name</span>
+                    <span className="gradient-text">{profile?.full_name || 'Your Name'}</span>
                 </h1>
 
                 {/* Title */}
                 <p className="text-2xl md:text-4xl font-semibold mb-6 text-text-primary">
-                    Full Stack Developer
+                    {profile?.title || 'Full Stack Developer'}
                 </p>
 
                 {/* Tagline */}
                 <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-12 leading-relaxed">
-                    I build innovative web applications with modern technologies.
-                    Passionate about creating seamless user experiences and scalable solutions.
+                    {profile?.bio || 'I build innovative web applications with modern technologies. Passionate about creating seamless user experiences and scalable solutions.'}
                 </p>
 
                 {/* CTA Buttons */}
@@ -64,31 +102,37 @@ export default function Hero() {
 
                 {/* Social Links */}
                 <div className="flex gap-6 justify-center mb-12">
-                    <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
-                        aria-label="GitHub"
-                    >
-                        <Github className="w-5 h-5" />
-                    </a>
-                    <a
-                        href="https://linkedin.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
-                        aria-label="LinkedIn"
-                    >
-                        <Linkedin className="w-5 h-5" />
-                    </a>
-                    <a
-                        href="mailto:your.email@example.com"
-                        className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
-                        aria-label="Email"
-                    >
-                        <Mail className="w-5 h-5" />
-                    </a>
+                    {profile?.github && (
+                        <a
+                            href={profile.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
+                            aria-label="GitHub"
+                        >
+                            <Github className="w-5 h-5" />
+                        </a>
+                    )}
+                    {profile?.linkedin && (
+                        <a
+                            href={profile.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
+                            aria-label="LinkedIn"
+                        >
+                            <Linkedin className="w-5 h-5" />
+                        </a>
+                    )}
+                    {profile?.email && (
+                        <a
+                            href={`mailto:${profile.email}`}
+                            className="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-hover-bg hover:scale-110 transition-smooth"
+                            aria-label="Email"
+                        >
+                            <Mail className="w-5 h-5" />
+                        </a>
+                    )}
                 </div>
 
                 {/* Scroll Indicator */}
