@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Profile } from '@/types/database'
 import { Save, User } from 'lucide-react'
+import FileUpload from '@/components/admin/FileUpload'
 
 export default function ProfileAdmin() {
     const [profile, setProfile] = useState<Profile | null>(null)
@@ -109,8 +110,8 @@ export default function ProfileAdmin() {
                 {/* Status Message */}
                 {message && (
                     <div className={`p-4 rounded-lg border ${message.type === 'success'
-                            ? 'bg-green-500/10 border-green-500/50 text-green-400'
-                            : 'bg-red-500/10 border-red-500/50 text-red-400'
+                        ? 'bg-green-500/10 border-green-500/50 text-green-400'
+                        : 'bg-red-500/10 border-red-500/50 text-red-400'
                         }`}>
                         {message.text}
                     </div>
@@ -224,34 +225,26 @@ export default function ProfileAdmin() {
                     </div>
                 </div>
 
-                {/* File URLs */}
+                {/* File Uploads */}
                 <div className="pt-6 border-t border-card-border">
                     <h3 className="text-xl font-bold mb-4">Media & Documents</h3>
 
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-semibold mb-2">Avatar Image URL</label>
-                            <input
-                                type="url"
-                                value={profile.avatar_url || ''}
-                                onChange={(e) => handleChange('avatar_url', e.target.value)}
-                                className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth"
-                                placeholder="https://example.com/your-photo.jpg"
-                            />
-                            <p className="text-xs text-text-muted mt-1">Optional: Add a photo URL or leave blank for initials</p>
-                        </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <FileUpload
+                            type="image"
+                            currentUrl={profile.avatar_url || ''}
+                            onUploadComplete={(url) => handleChange('avatar_url', url)}
+                            label="Profile Avatar"
+                            bucketName="portfolio"
+                        />
 
-                        <div>
-                            <label className="block text-sm font-semibold mb-2">Resume/CV URL</label>
-                            <input
-                                type="url"
-                                value={profile.resume_url || ''}
-                                onChange={(e) => handleChange('resume_url', e.target.value)}
-                                className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth"
-                                placeholder="https://example.com/your-resume.pdf"
-                            />
-                            <p className="text-xs text-text-muted mt-1">Upload your resume to a cloud service and paste the link here</p>
-                        </div>
+                        <FileUpload
+                            type="pdf"
+                            currentUrl={profile.resume_url || ''}
+                            onUploadComplete={(url) => handleChange('resume_url', url)}
+                            label="Resume / CV"
+                            bucketName="portfolio"
+                        />
                     </div>
                 </div>
 
