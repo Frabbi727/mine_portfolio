@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Project } from '@/types/database'
-import { ExternalLink, Github, Sparkles } from 'lucide-react'
+import { ExternalLink, Github, Sparkles, Code2, FolderKanban } from 'lucide-react'
 
 export default function Projects() {
     const [projects, setProjects] = useState<Project[]>([])
@@ -77,72 +77,86 @@ export default function Projects() {
                     </p>
                 </div>
 
-                {/* Filters */}
+                {/* Filters - Professional Design */}
                 {(allTechnologies.length > 0 || allCategories.length > 0) && (
-                    <div className="mb-12 space-y-4">
-                        {/* Technology Filter */}
-                        {allTechnologies.length > 0 && (
-                            <div className="glass p-6 rounded-2xl">
-                                <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
-                                    Filter by Technology
-                                </h3>
-                                <div className="flex flex-wrap gap-3">
-                                    <button
-                                        onClick={() => setSelectedTech('All')}
-                                        className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedTech === 'All'
-                                                ? 'gradient-bg text-white shadow-lg shadow-primary/30 scale-105'
-                                                : 'bg-white/5 hover:bg-white/10 border border-white/10'
-                                            }`}
-                                    >
-                                        All Technologies
-                                    </button>
-                                    {allTechnologies.map(tech => (
+                    <div className="mb-16">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {/* Technology Filter */}
+                            {allTechnologies.length > 0 && (
+                                <div className="glass p-8 rounded-2xl border border-white/10">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center border border-primary/20">
+                                            <Code2 className="w-5 h-5 text-primary" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-white text-lg">Technology</h3>
+                                            <p className="text-xs text-text-muted">Filter by tech stack</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
                                         <button
-                                            key={tech}
-                                            onClick={() => setSelectedTech(tech)}
-                                            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedTech === tech
-                                                    ? 'gradient-bg text-white shadow-lg shadow-primary/30 scale-105'
-                                                    : 'bg-white/5 hover:bg-white/10 border border-white/10'
+                                            onClick={() => setSelectedTech('All')}
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedTech === 'All'
+                                                    ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
+                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
                                         >
-                                            {tech}
+                                            All
                                         </button>
-                                    ))}
+                                        {allTechnologies.map(tech => (
+                                            <button
+                                                key={tech}
+                                                onClick={() => setSelectedTech(tech)}
+                                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedTech === tech
+                                                        ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
+                                                        : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                    }`}
+                                            >
+                                                {tech}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {/* Category Filter */}
-                        {allCategories.length > 0 && (
-                            <div className="glass p-6 rounded-2xl">
-                                <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
-                                    Filter by Category
-                                </h3>
-                                <div className="flex flex-wrap gap-3">
-                                    <button
-                                        onClick={() => setSelectedCategory('All')}
-                                        className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedCategory === 'All'
-                                                ? 'gradient-bg text-white shadow-lg shadow-accent/30 scale-105'
-                                                : 'bg-white/5 hover:bg-white/10 border border-white/10'
-                                            }`}
-                                    >
-                                        All Categories
-                                    </button>
-                                    {allCategories.map(category => (
+                            {/* Category Filter */}
+                            {allCategories.length > 0 && (
+                                <div className="glass p-8 rounded-2xl border border-white/10">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center border border-accent/20">
+                                            <FolderKanban className="w-5 h-5 text-accent" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-white text-lg">Category</h3>
+                                            <p className="text-xs text-text-muted">Filter by project type</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap gap- 2">
                                         <button
-                                            key={category}
-                                            onClick={() => setSelectedCategory(category)}
-                                            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedCategory === category
-                                                    ? 'gradient-bg text-white shadow-lg shadow-accent/30 scale-105'
-                                                    : 'bg-white/5 hover:bg-white/10 border border-white/10'
+                                            onClick={() => setSelectedCategory('All')}
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'All'
+                                                    ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
                                         >
-                                            {category}
+                                            All
                                         </button>
-                                    ))}
+                                        {allCategories.map(category => (
+                                            <button
+                                                key={category}
+                                                onClick={() => setSelectedCategory(category)}
+                                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
+                                                        ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                                                        : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                    }`}
+                                            >
+                                                {category}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 )}
 
