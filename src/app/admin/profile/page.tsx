@@ -43,6 +43,7 @@ export default function ProfileAdmin() {
                 full_name: profile.full_name,
                 title: profile.title,
                 bio: profile.bio,
+                about_me: profile.about_me,
                 email: profile.email,
                 github: profile.github,
                 linkedin: profile.linkedin,
@@ -148,20 +149,35 @@ export default function ProfileAdmin() {
                     </div>
                 </div>
 
-                {/* Bio */}
+                {/* Bio - For Hero Section */}
                 <div>
                     <label className="block text-sm font-semibold mb-2">
-                        Bio / About Me <span className="text-red-400">*</span>
+                        Bio / Tagline <span className="text-red-400">*</span>
                     </label>
                     <textarea
                         required
-                        rows={4}
+                        rows={2}
                         value={profile.bio}
                         onChange={(e) => handleChange('bio', e.target.value)}
                         className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth resize-none"
-                        placeholder="Tell visitors about yourself, your experience, and what you're passionate about..."
+                        placeholder="A brief tagline or introduction (1-2 sentences)"
                     />
-                    <p className="text-xs text-text-muted mt-1">This appears in the About section</p>
+                    <p className="text-xs text-text-muted mt-1">Short intro shown in the Hero section</p>
+                </div>
+
+                {/* About Me - For About Section */}
+                <div>
+                    <label className="block text-sm font-semibold mb-2">
+                        About Me (Detailed)
+                    </label>
+                    <textarea
+                        rows={6}
+                        value={profile.about_me || ''}
+                        onChange={(e) => handleChange('about_me', e.target.value)}
+                        className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth resize-none"
+                        placeholder="Tell visitors about yourself, your experience, background, and what you're passionate about... (longer description)"
+                    />
+                    <p className="text-xs text-text-muted mt-1">Detailed description shown in the About section</p>
                 </div>
 
                 {/* Contact Info */}

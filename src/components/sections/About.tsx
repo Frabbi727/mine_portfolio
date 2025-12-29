@@ -81,7 +81,7 @@ export default function About() {
                             </p>
 
                             <p className="text-text-secondary leading-relaxed text-base">
-                                {profile?.bio || 'With a passion for creating innovative web applications, I specialize in building scalable and user-friendly solutions using modern technologies.'}
+                                {profile?.about_me || profile?.bio || 'With a passion for creating innovative web applications, I specialize in building scalable and user-friendly solutions using modern technologies.'}
                             </p>
 
                             {profile?.location && (
