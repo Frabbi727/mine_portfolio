@@ -97,8 +97,8 @@ export default function Projects() {
                                         <button
                                             onClick={() => setSelectedTech('All')}
                                             className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedTech === 'All'
-                                                    ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
+                                                : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
                                         >
                                             All
@@ -108,8 +108,8 @@ export default function Projects() {
                                                 key={tech}
                                                 onClick={() => setSelectedTech(tech)}
                                                 className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedTech === tech
-                                                        ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-                                                        : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                    ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
+                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                     }`}
                                             >
                                                 {tech}
@@ -131,12 +131,12 @@ export default function Projects() {
                                             <p className="text-xs text-text-muted">Filter by project type</p>
                                         </div>
                                     </div>
-                                    <div className="flex flex-wrap gap- 2">
+                                    <div className="flex flex-wrap gap-3">
                                         <button
                                             onClick={() => setSelectedCategory('All')}
                                             className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'All'
-                                                    ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
-                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                                                : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
                                         >
                                             All
@@ -146,8 +146,8 @@ export default function Projects() {
                                                 key={category}
                                                 onClick={() => setSelectedCategory(category)}
                                                 className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
-                                                        ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
-                                                        : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
+                                                    ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
+                                                    : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                     }`}
                                             >
                                                 {category}

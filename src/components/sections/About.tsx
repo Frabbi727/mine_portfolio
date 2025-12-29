@@ -73,10 +73,14 @@ export default function About() {
                         {/* Content Side */}
                         <div className="order-1 md:order-2 space-y-6">
                             <h3 className="text-2xl md:text-3xl font-bold text-text-primary">
-                                Hi! I&apos;m {profile?.full_name ? `a ${profile.title}` : 'a Full Stack Developer'}
+                                {profile?.full_name || 'Your Name'}
                             </h3>
 
-                            <p className="text-text-secondary leading-relaxed whitespace-pre-line">
+                            <p className="text-lg text-primary font-semibold mb-2">
+                                {profile?.title || 'Full Stack Developer'}
+                            </p>
+
+                            <p className="text-text-secondary leading-relaxed text-base">
                                 {profile?.bio || 'With a passion for creating innovative web applications, I specialize in building scalable and user-friendly solutions using modern technologies.'}
                             </p>
 
@@ -88,12 +92,12 @@ export default function About() {
 
                             {/* Download Resume */}
                             {profile?.resume_url && (
-                                <div className="pt-6">
+                                <div className="pt-4">
                                     <a
                                         href={profile.resume_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-6 py-3 gradient-bg text-white font-semibold rounded-full hover:scale-105 transition-smooth shadow-lg shadow-primary/30"
+                                        className="inline-flex items-center gap-3 px-8 py-4 gradient-bg text-white font-semibold rounded-full hover:scale-105 transition-smooth shadow-lg shadow-primary/40"
                                     >
                                         <Download className="w-5 h-5" />
                                         Download Resume
