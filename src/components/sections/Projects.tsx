@@ -93,10 +93,10 @@ export default function Projects() {
                                             <p className="text-xs text-text-muted">Filter by tech stack</p>
                                         </div>
                                     </div>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-3">
                                         <button
                                             onClick={() => setSelectedTech('All')}
-                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedTech === 'All'
+                                            className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedTech === 'All'
                                                     ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
                                                     : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
@@ -107,7 +107,7 @@ export default function Projects() {
                                             <button
                                                 key={tech}
                                                 onClick={() => setSelectedTech(tech)}
-                                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedTech === tech
+                                                className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedTech === tech
                                                         ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
                                                         : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                     }`}
@@ -134,7 +134,7 @@ export default function Projects() {
                                     <div className="flex flex-wrap gap- 2">
                                         <button
                                             onClick={() => setSelectedCategory('All')}
-                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'All'
+                                            className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedCategory === 'All'
                                                     ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
                                                     : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                 }`}
@@ -145,7 +145,7 @@ export default function Projects() {
                                             <button
                                                 key={category}
                                                 onClick={() => setSelectedCategory(category)}
-                                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
+                                                className={`px-6 py-3 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
                                                         ? 'bg-gradient-to-r from-accent to-accent/80 text-white shadow-lg shadow-accent/30'
                                                         : 'bg-white/5 hover:bg-white/10 text-text-secondary hover:text-white border border-white/10'
                                                     }`}
@@ -221,7 +221,7 @@ export default function Projects() {
                                     </p>
 
                                     {/* Technologies */}
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-3">
                                         {project.technologies.slice(0, 3).map((tech, idx) => (
                                             <span
                                                 key={idx}
@@ -244,7 +244,7 @@ export default function Projects() {
                                                 href={project.demo_url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 gradient-bg text-white rounded-lg hover:scale-105 transition-all text-sm font-semibold shadow-lg shadow-primary/20"
+                                                className="flex-1 flex items-center justify-center gap-3 px-6 py-3.5 gradient-bg text-white rounded-lg hover:scale-105 transition-all text-sm font-semibold shadow-lg shadow-primary/20"
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 <ExternalLink className="w-4 h-4" />
@@ -256,7 +256,7 @@ export default function Projects() {
                                                 href={project.github_url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 rounded-lg hover:scale-105 transition-all text-sm font-semibold border border-white/10"
+                                                className="flex-1 flex items-center justify-center gap-3 px-6 py-3.5 bg-white/5 hover:bg-white/10 rounded-lg hover:scale-105 transition-all text-sm font-semibold border border-white/10"
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 <Github className="w-4 h-4" />
