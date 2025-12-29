@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Project } from '@/types/database'
-import { ExternalLink, Github, Filter } from 'lucide-react'
+import { ExternalLink, Github, Sparkles } from 'lucide-react'
 
 export default function Projects() {
     const [projects, setProjects] = useState<Project[]>([])
@@ -64,87 +64,87 @@ export default function Projects() {
     ).sort()
 
     return (
-        <section id="projects" className="min-h-screen px-4 py-20">
+        <section id="projects" className="min-h-screen px-6 py-24">
             <div className="max-w-7xl mx-auto">
                 {/* Section Header */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         My <span className="gradient-text">Projects</span>
                     </h2>
                     <div className="w-20 h-1 gradient-bg mx-auto rounded-full mb-6"></div>
-                    <p className="text-text-secondary max-w-2xl mx-auto">
+                    <p className="text-text-secondary max-w-2xl mx-auto text-lg">
                         Here are some of my recent projects. Click on any project to learn more.
                     </p>
                 </div>
 
                 {/* Filters */}
-                <div className="mb-12 space-y-6">
-                    {/* Technology Filter */}
-                    {allTechnologies.length > 0 && (
-                        <div className="glass p-6 rounded-2xl">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Filter className="w-5 h-5 text-primary" />
-                                <h3 className="font-semibold">Filter by Technology</h3>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                <button
-                                    onClick={() => setSelectedTech('All')}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${selectedTech === 'All'
-                                            ? 'gradient-bg text-white shadow-lg shadow-primary/30'
-                                            : 'glass hover:bg-hover-bg'
-                                        }`}
-                                >
-                                    All
-                                </button>
-                                {allTechnologies.map(tech => (
+                {(allTechnologies.length > 0 || allCategories.length > 0) && (
+                    <div className="mb-12 space-y-4">
+                        {/* Technology Filter */}
+                        {allTechnologies.length > 0 && (
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
+                                    Filter by Technology
+                                </h3>
+                                <div className="flex flex-wrap gap-3">
                                     <button
-                                        key={tech}
-                                        onClick={() => setSelectedTech(tech)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${selectedTech === tech
-                                                ? 'gradient-bg text-white shadow-lg shadow-primary/30'
-                                                : 'glass hover:bg-hover-bg'
+                                        onClick={() => setSelectedTech('All')}
+                                        className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedTech === 'All'
+                                                ? 'gradient-bg text-white shadow-lg shadow-primary/30 scale-105'
+                                                : 'bg-white/5 hover:bg-white/10 border border-white/10'
                                             }`}
                                     >
-                                        {tech}
+                                        All Technologies
                                     </button>
-                                ))}
+                                    {allTechnologies.map(tech => (
+                                        <button
+                                            key={tech}
+                                            onClick={() => setSelectedTech(tech)}
+                                            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedTech === tech
+                                                    ? 'gradient-bg text-white shadow-lg shadow-primary/30 scale-105'
+                                                    : 'bg-white/5 hover:bg-white/10 border border-white/10'
+                                                }`}
+                                        >
+                                            {tech}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {/* Category Filter */}
-                    {allCategories.length > 0 && (
-                        <div className="glass p-6 rounded-2xl">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Filter className="w-5 h-5 text-accent" />
-                                <h3 className="font-semibold">Filter by Category</h3>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                <button
-                                    onClick={() => setSelectedCategory('All')}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${selectedCategory === 'All'
-                                            ? 'gradient-bg text-white shadow-lg shadow-accent/30'
-                                            : 'glass hover:bg-hover-bg'
-                                        }`}
-                                >
-                                    All
-                                </button>
-                                {allCategories.map(category => (
+                        {/* Category Filter */}
+                        {allCategories.length > 0 && (
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">
+                                    Filter by Category
+                                </h3>
+                                <div className="flex flex-wrap gap-3">
                                     <button
-                                        key={category}
-                                        onClick={() => setSelectedCategory(category)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${selectedCategory === category
-                                                ? 'gradient-bg text-white shadow-lg shadow-accent/30'
-                                                : 'glass hover:bg-hover-bg'
+                                        onClick={() => setSelectedCategory('All')}
+                                        className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedCategory === 'All'
+                                                ? 'gradient-bg text-white shadow-lg shadow-accent/30 scale-105'
+                                                : 'bg-white/5 hover:bg-white/10 border border-white/10'
                                             }`}
                                     >
-                                        {category}
+                                        All Categories
                                     </button>
-                                ))}
+                                    {allCategories.map(category => (
+                                        <button
+                                            key={category}
+                                            onClick={() => setSelectedCategory(category)}
+                                            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${selectedCategory === category
+                                                    ? 'gradient-bg text-white shadow-lg shadow-accent/30 scale-105'
+                                                    : 'bg-white/5 hover:bg-white/10 border border-white/10'
+                                                }`}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
 
                 {/* Projects Grid */}
                 {loading ? (
@@ -157,93 +157,99 @@ export default function Projects() {
                         <p className="text-text-secondary text-lg">No projects found. Try different filters.</p>
                     </div>
                 ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filteredProjects.map((project, index) => (
                             <div
                                 key={project.id}
-                                className="glass p-6 rounded-2xl hover:scale-105 transition-smooth cursor-pointer group"
+                                className="glass rounded-2xl overflow-hidden hover:scale-[1.02] transition-all duration-300 cursor-pointer group border border-white/5"
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
                                 {/* Project Image */}
-                                <div className="relative mb-4 rounded-xl overflow-hidden aspect-video bg-gradient-to-br from-primary/20 to-accent/20">
+                                <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-accent/20 overflow-hidden">
                                     {project.image_url ? (
                                         <img
                                             src={project.image_url}
                                             alt={project.title}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-smooth"
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-4xl font-bold gradient-text">
-                                            {project.title.charAt(0)}
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <span className="text-7xl font-bold gradient-text">
+                                                {project.title.charAt(0)}
+                                            </span>
                                         </div>
                                     )}
 
                                     {/* Featured Badge */}
                                     {project.is_featured && (
-                                        <div className="absolute top-3 right-3 px-3 py-1 gradient-bg text-white text-xs font-bold rounded-full">
+                                        <div className="absolute top-4 right-4 px-4 py-1.5 gradient-bg text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1.5">
+                                            <Sparkles className="w-3.5 h-3.5" />
                                             Featured
                                         </div>
                                     )}
                                 </div>
 
-                                {/* Category */}
-                                <div className="text-sm text-primary font-semibold mb-2">
-                                    {project.category}
-                                </div>
+                                {/* Project Content */}
+                                <div className="p-6 space-y-4">
+                                    {/* Category */}
+                                    <div className="text-sm text-primary font-semibold uppercase tracking-wide">
+                                        {project.category}
+                                    </div>
 
-                                {/* Project Title */}
-                                <h3 className="text-xl font-bold mb-2 text-text-primary">
-                                    {project.title}
-                                </h3>
+                                    {/* Project Title */}
+                                    <h3 className="text-xl font-bold text-white line-clamp-1">
+                                        {project.title}
+                                    </h3>
 
-                                {/* Description */}
-                                <p className="text-text-secondary mb-4 line-clamp-2">
-                                    {project.description}
-                                </p>
+                                    {/* Description */}
+                                    <p className="text-text-secondary text-sm leading-relaxed line-clamp-2 min-h-[2.5rem]">
+                                        {project.description}
+                                    </p>
 
-                                {/* Technologies */}
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.technologies.slice(0, 3).map((tech, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                    {project.technologies.length > 3 && (
-                                        <span className="px-3 py-1 bg-accent/10 text-accent text-xs rounded-full">
-                                            +{project.technologies.length - 3}
-                                        </span>
-                                    )}
-                                </div>
+                                    {/* Technologies */}
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.technologies.slice(0, 3).map((tech, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full border border-primary/20"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                        {project.technologies.length > 3 && (
+                                            <span className="px-3 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full border border-accent/20">
+                                                +{project.technologies.length - 3} more
+                                            </span>
+                                        )}
+                                    </div>
 
-                                {/* Links */}
-                                <div className="flex gap-3">
-                                    {project.demo_url && (
-                                        <a
-                                            href={project.demo_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 gradient-bg text-white rounded-lg hover:scale-105 transition-smooth text-sm font-medium"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <ExternalLink className="w-4 h-4" />
-                                            Demo
-                                        </a>
-                                    )}
-                                    {project.github_url && (
-                                        <a
-                                            href={project.github_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 glass hover:bg-hover-bg rounded-lg hover:scale-105 transition-smooth text-sm font-medium"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <Github className="w-4 h-4" />
-                                            Code
-                                        </a>
-                                    )}
+                                    {/* Links */}
+                                    <div className="flex gap-3 pt-2">
+                                        {project.demo_url && (
+                                            <a
+                                                href={project.demo_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 gradient-bg text-white rounded-lg hover:scale-105 transition-all text-sm font-semibold shadow-lg shadow-primary/20"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <ExternalLink className="w-4 h-4" />
+                                                Live Demo
+                                            </a>
+                                        )}
+                                        {project.github_url && (
+                                            <a
+                                                href={project.github_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 rounded-lg hover:scale-105 transition-all text-sm font-semibold border border-white/10"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <Github className="w-4 h-4" />
+                                                Code
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
