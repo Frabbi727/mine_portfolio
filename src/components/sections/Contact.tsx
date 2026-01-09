@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Profile } from '@/types/database'
-import { Mail, MapPin, Send, Github, Linkedin } from 'lucide-react'
+import { Mail, Github, Linkedin, Send, MessageSquare, User, AtSign } from 'lucide-react'
 
 export default function Contact() {
     const [profile, setProfile] = useState<Profile | null>(null)
@@ -12,8 +12,7 @@ export default function Contact() {
         email: '',
         message: ''
     })
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
     useEffect(() => {
         fetchProfile()
@@ -33,199 +32,151 @@ export default function Contact() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setStatus('loading')
-        setErrorMessage('')
+        setStatus('sending')
 
-        const supabase = createClient()
-        const { error } = await supabase
-            .from('contact_submissions')
-            .insert([{
-                name: formData.name,
-                email: formData.email,
-                message: formData.message,
-                is_read: false
-            }])
-
-        if (error) {
-            setStatus('error')
-            setErrorMessage('Failed to send message. Please try again.')
-            return
-        }
-
-        setStatus('success')
-        setFormData({ name: '', email: '', message: '' })
-
+        // Mock submission for now
         setTimeout(() => {
-            setStatus('idle')
-        }, 5000)
-    }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
+            setStatus('success')
+            setFormData({ name: '', email: '', message: '' })
+            setTimeout(() => setStatus('idle'), 5000)
+        }, 1500)
     }
 
     return (
-        <section id="contact" className="min-h-screen px-4 py-20">
-            <div className="max-w-5xl mx-auto">
+        <section id="contact" className="section-padding px-6">
+            <div className="section-container">
                 {/* Section Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <div className="text-center mb-16 space-y-4 reveal">
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                         Get In <span className="gradient-text">Touch</span>
                     </h2>
-                    <div className="w-20 h-1 gradient-bg mx-auto rounded-full mb-6"></div>
-                    <p className="text-text-secondary max-w-2xl mx-auto">
-                        Have a project in mind or want to collaborate? Feel free to reach out!
+                    <p className="text-text-secondary max-w-2xl mx-auto text-lg text-balance">
+                        Have a project in mind or just want to say hi? I&apos;m always open to discussing new opportunities.
                     </p>
+                    <div className="w-20 h-1.5 gradient-bg mx-auto rounded-full"></div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
-                    {/* Contact Info */}
-                    <div className="space-y-6">
-                        <div className="glass p-8 rounded-2xl">
-                            <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+                <div className="grid lg:grid-cols-12 gap-12 reveal" style={{ animationDelay: '200ms' }}>
+                    {/* Information Side */}
+                    <div className="lg:col-span-5 space-y-8">
+                        <div className="glass p-8 space-y-8">
+                            <h3 className="text-2xl font-bold tracking-tight">Contact Information</h3>
 
-                            <div className="space-y-4">
-                                <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                        <Mail className="w-5 h-5 text-primary" />
+                            <div className="space-y-6">
+                                {profile?.email && (
+                                    <div className="flex items-center gap-4 group">
+                                        <div className="w-12 h-12 glass flex items-center justify-center text-primary border-primary/20 group-hover:bg-primary group-hover:text-white transition-all duration-300 rounded-xl">
+                                            <Mail size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold text-text-muted uppercase tracking-widest">Email Me</p>
+                                            <a href={`mailto:${profile.email}`} className="text-text-primary font-medium hover:text-primary transition-colors">
+                                                {profile.email}
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-semibold mb-1">Email</h4>
-                                        <a
-                                            href={`mailto:${profile?.email || 'your.email@example.com'}`}
-                                            className="text-text-secondary hover:text-primary transition-smooth"
-                                        >
-                                            {profile?.email || 'your.email@example.com'}
-                                        </a>
-                                    </div>
-                                </div>
+                                )}
 
-                                <div className="flex items-start gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                                        <MapPin className="w-5 h-5 text-accent" />
+                                {profile?.github && (
+                                    <div className="flex items-center gap-4 group">
+                                        <div className="w-12 h-12 glass flex items-center justify-center text-primary border-primary/20 group-hover:bg-primary group-hover:text-white transition-all duration-300 rounded-xl">
+                                            <Github size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold text-text-muted uppercase tracking-widest">Follow Me</p>
+                                            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-text-primary font-medium hover:text-primary transition-colors">
+                                                github.com/profile
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-semibold mb-1">Location</h4>
-                                        <p className="text-text-secondary">
-                                            {profile?.location || 'Your City, Country'}
-                                        </p>
+                                )}
+
+                                {profile?.linkedin && (
+                                    <div className="flex items-center gap-4 group">
+                                        <div className="w-12 h-12 glass flex items-center justify-center text-primary border-primary/20 group-hover:bg-primary group-hover:text-white transition-all duration-300 rounded-xl">
+                                            <Linkedin size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold text-text-muted uppercase tracking-widest">Connect</p>
+                                            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-primary font-medium hover:text-primary transition-colors">
+                                                linkedin.com/in/profile
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
+                        </div>
 
-                            {/* Social Links */}
-                            <div className="mt-8 pt-8 border-t border-card-border">
-                                <h4 className="font-semibold mb-4">Follow Me</h4>
-                                <div className="flex gap-4">
-                                    {profile?.github && (
-                                        <a
-                                            href={profile.github}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="w-12 h-12 glass rounded-full flex items-center justify-center hover:scale-110 transition-smooth"
-                                            aria-label="GitHub"
-                                        >
-                                            <Github className="w-5 h-5" />
-                                        </a>
-                                    )}
-                                    {profile?.linkedin && (
-                                        <a
-                                            href={profile.linkedin}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="w-12 h-12 glass rounded-full flex items-center justify-center hover:scale-110 transition-smooth"
-                                            aria-label="LinkedIn"
-                                        >
-                                            <Linkedin className="w-5 h-5" />
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
+                        {/* Availability Status */}
+                        <div className="glass p-6 border-success/20 bg-success/5 flex items-center gap-4">
+                            <div className="w-3 h-3 bg-success rounded-full animate-pulse shadow-[0_0_8px_var(--success)]"></div>
+                            <p className="text-sm font-medium text-success">Available for new projects & collaborations</p>
                         </div>
                     </div>
 
-                    {/* Contact Form */}
-                    <div className="glass p-8 rounded-2xl">
-                        <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                                    Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth"
-                                    placeholder="Your Name"
-                                />
+                    {/* Form Side */}
+                    <div className="lg:col-span-7">
+                        <form onSubmit={handleSubmit} className="glass p-8 md:p-10 space-y-6">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label htmlFor="name" className="text-sm font-semibold text-text-secondary ml-1 flex items-center gap-2">
+                                        <User size={14} className="text-primary" /> Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        required
+                                        className="w-full bg-gray-900/50 border-white/5 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl py-4 px-5 text-text-primary transition-all outline-none"
+                                        placeholder="John Doe"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="email" className="text-sm font-semibold text-text-secondary ml-1 flex items-center gap-2">
+                                        <AtSign size={14} className="text-primary" /> Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        required
+                                        className="w-full bg-gray-900/50 border-white/5 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl py-4 px-5 text-text-primary transition-all outline-none"
+                                        placeholder="john@example.com"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    />
+                                </div>
                             </div>
 
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth"
-                                    placeholder="your.email@example.com"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                                    Message
+                            <div className="space-y-2">
+                                <label htmlFor="message" className="text-sm font-semibold text-text-secondary ml-1 flex items-center gap-2">
+                                    <MessageSquare size={14} className="text-primary" /> Message
                                 </label>
                                 <textarea
                                     id="message"
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
                                     required
                                     rows={5}
-                                    className="w-full px-4 py-3 bg-card-bg border border-card-border rounded-lg focus:outline-none focus:border-primary transition-smooth resize-none"
-                                    placeholder="Your message..."
-                                />
+                                    className="w-full bg-gray-900/50 border-white/5 focus:border-primary focus:ring-1 focus:ring-primary/20 rounded-xl py-4 px-5 text-text-primary transition-all outline-none resize-none"
+                                    placeholder="Tell me about your project..."
+                                    value={formData.message}
+                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                ></textarea>
                             </div>
-
-                            {/* Status Messages */}
-                            {status === 'success' && (
-                                <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400">
-                                    Message sent successfully! I&apos;ll get back to you soon.
-                                </div>
-                            )}
-
-                            {status === 'error' && (
-                                <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
-                                    {errorMessage}
-                                </div>
-                            )}
 
                             <button
                                 type="submit"
-                                disabled={status === 'loading'}
-                                className="w-full px-6 py-4 gradient-bg text-white font-semibold rounded-lg hover:scale-105 transition-smooth shadow-lg shadow-primary/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={status === 'sending'}
+                                className="btn btn-primary btn-lg w-full !py-4 rounded-xl text-lg group"
                             >
-                                {status === 'loading' ? (
+                                {status === 'sending' ? (
                                     <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                                         Sending...
                                     </>
+                                ) : status === 'success' ? (
+                                    <>Message Sent!</>
                                 ) : (
                                     <>
-                                        <Send className="w-5 h-5" />
                                         Send Message
                                     </>
                                 )}

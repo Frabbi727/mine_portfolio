@@ -11,10 +11,6 @@ export default function ProjectsAdmin() {
     const [showForm, setShowForm] = useState(false)
     const [editingProject, setEditingProject] = useState<Project | null>(null)
 
-    useEffect(() => {
-        fetchProjects()
-    }, [])
-
     const fetchProjects = async () => {
         const supabase = createClient()
         const { data } = await supabase
@@ -41,6 +37,10 @@ export default function ProjectsAdmin() {
             fetchProjects()
         }
     }
+
+    useEffect(() => {
+        fetchProjects()
+    }, [])
 
     const togglePublished = async (project: Project) => {
         const supabase = createClient()
@@ -84,17 +84,17 @@ export default function ProjectsAdmin() {
     }
 
     return (
-        <div>
+        <div className="max-w-7xl">
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">
-                        <span className="gradient-text">Projects</span>
+                    <h1 className="text-4xl font-bold mb-2 gradient-text">
+                        Projects
                     </h1>
                     <p className="text-text-secondary">Manage your portfolio projects</p>
                 </div>
                 <button
                     onClick={() => setShowForm(true)}
-                    className="px-6 py-3 gradient-bg text-white font-semibold rounded-lg hover:scale-105 transition-smooth shadow-lg shadow-primary/30 flex items-center gap-2"
+                    className="btn btn-primary flex items-center gap-2"
                 >
                     <Plus className="w-5 h-5" />
                     New Project
@@ -102,23 +102,36 @@ export default function ProjectsAdmin() {
             </div>
 
             {projects.length === 0 ? (
-                <div className="glass p-12 rounded-2xl text-center">
-                    <p className="text-text-secondary mb-4">No projects yet</p>
+                <div className="glass p-12 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Plus className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">No projects yet</h3>
+                    <p className="text-text-muted mb-6">Create your first project to start building your portfolio</p>
                     <button
                         onClick={() => setShowForm(true)}
-                        className="px-6 py-3 gradient-bg text-white font-semibold rounded-lg hover:scale-105 transition-smooth"
+                        className="btn btn-primary inline-flex items-center gap-2"
                     >
-                        Create First Project
+                        <Plus className="w-5 h-5" />
+                        Create Project
                     </button>
                 </div>
             ) : (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-6">
                     {projects.map((project) => (
-                        <div key={project.id} className="glass p-6 rounded-2xl">
-                            <div className="flex gap-6">
+                        <div
+                            key={project.id}
+                            className="glass hover:border-card-border transition-smooth"
+                        >
+                            <div className="flex gap-6 p-6">
+                                {/* Thumbnail */}
                                 <div className="w-32 h-32 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0 overflow-hidden">
                                     {project.image_url ? (
-                                        <img src={project.image_url} alt={project.title} className="w-full h-full object-cover" />
+                                        <img
+                                            src={project.image_url}
+                                            alt={project.title}
+                                            className="w-full h-full object-cover"
+                                        />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-3xl font-bold gradient-text">
                                             {project.title.charAt(0)}
@@ -126,65 +139,112 @@ export default function ProjectsAdmin() {
                                     )}
                                 </div>
 
-                                <div className="flex-1">
-                                    <div className="flex items-start justify-between mb-2">
-                                        <div>
-                                            <h3 className="text-xl font-bold mb-1">{project.title}</h3>
-                                            <p className="text-sm text-primary mb-2">{project.category}</p>
+                                {/* Content */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <h3 className="text-xl font-bold">{project.title}</h3>
+                                                <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-md border border-primary/20">
+                                                    {project.category}
+                                                </span>
+                                            </div>
+                                            <p className="text-text-secondary line-clamp-2">{project.description}</p>
                                         </div>
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={() => togglePublished(project)}
-                                                className={`p-2 rounded-lg transition-smooth ${project.is_published ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}
-                                                title={project.is_published ? 'Published' : 'Draft'}
-                                            >
-                                                {project.is_published ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-                                            </button>
-                                            <button
-                                                onClick={() => toggleFeatured(project)}
-                                                className={`px-3 py-2 rounded-lg text-sm transition-smooth ${project.is_featured ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}`}
-                                            >
-                                                {project.is_featured ? '⭐ Featured' : 'Feature'}
-                                            </button>
+
+                                        {/* Status badges */}
+                                        <div className="flex gap-2 ml-4">
+                                            {project.is_featured && (
+                                                <span className="px-3 py-1 bg-yellow-500/10 text-yellow-500 text-sm rounded-md border border-yellow-500/20">
+                                                    ⭐ Featured
+                                                </span>
+                                            )}
+                                            <span className={`px-3 py-1 text-sm rounded-md border ${project.is_published
+                                                ? 'bg-green-500/10 text-green-500 border-green-500/20'
+                                                : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                                                }`}>
+                                                {project.is_published ? '✓ Published' : '○ Draft'}
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <p className="text-text-secondary mb-3 line-clamp-2">{project.description}</p>
-
+                                    {/* Technologies */}
                                     <div className="flex flex-wrap gap-2 mb-4">
                                         {project.technologies.map((tech, idx) => (
-                                            <span key={idx} className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full">
+                                            <span
+                                                key={idx}
+                                                className="px-2 py-1 bg-card-bg text-text-secondary text-xs rounded border border-card-border"
+                                            >
                                                 {tech}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="flex gap-4 items-center">
-                                        <div className="flex gap-2">
+                                    {/* Actions */}
+                                    <div className="flex items-center gap-3 pt-4 border-t border-card-border">
+                                        {/* Quick toggles */}
+                                        <button
+                                            onClick={() => togglePublished(project)}
+                                            className={`btn btn-sm ${project.is_published
+                                                ? 'bg-green-500/10 text-green-500 hover:bg-green-500/20'
+                                                : 'bg-gray-500/10 text-gray-400 hover:bg-gray-500/20'
+                                                }`}
+                                            title={project.is_published ? 'Published' : 'Draft'}
+                                        >
+                                            {project.is_published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                                        </button>
+                                        <button
+                                            onClick={() => toggleFeatured(project)}
+                                            className={`btn btn-sm ${project.is_featured
+                                                ? 'bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20'
+                                                : 'bg-gray-500/10 text-gray-400 hover:bg-gray-500/20'
+                                                }`}
+                                            title={project.is_featured ? 'Featured' : 'Not Featured'}
+                                        >
+                                            ★
+                                        </button>
+
+                                        {/* Links */}
+                                        <div className="flex gap-3 flex-1">
                                             {project.demo_url && (
-                                                <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
+                                                <a
+                                                    href={project.demo_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-primary hover:underline"
+                                                >
                                                     Demo →
                                                 </a>
                                             )}
                                             {project.github_url && (
-                                                <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline">
+                                                <a
+                                                    href={project.github_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-sm text-accent hover:underline"
+                                                >
                                                     GitHub →
                                                 </a>
                                             )}
                                         </div>
-                                        <div className="flex-1"></div>
-                                        <button
-                                            onClick={() => setEditingProject(project)}
-                                            className="p-2 glass hover:bg-hover-bg rounded-lg transition-smooth"
-                                        >
-                                            <Edit className="w-4 h-4" />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(project.id)}
-                                            className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-smooth"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
+
+                                        {/* Edit/Delete */}
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => setEditingProject(project)}
+                                                className="btn btn-ghost btn-sm btn-icon"
+                                                title="Edit"
+                                            >
+                                                <Edit className="w-4 h-4" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(project.id)}
+                                                className="btn btn-sm btn-icon bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                                                title="Delete"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -362,18 +422,18 @@ function ProjectForm({ project, onClose }: { project: Project | null, onClose: (
                     </label>
                 </div>
 
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-3 pt-4">
                     <button
                         type="submit"
                         disabled={saving}
-                        className="px-6 py-3 gradient-bg text-white font-semibold rounded-lg hover:scale-105 transition-smooth shadow-lg shadow-primary/30 disabled:opacity-50"
+                        className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {saving ? 'Saving...' : project ? 'Update Project' : 'Create Project'}
                     </button>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-6 py-3 glass hover:bg-hover-bg font-semibold rounded-lg transition-smooth"
+                        className="btn btn-secondary"
                     >
                         Cancel
                     </button>

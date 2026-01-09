@@ -28,7 +28,6 @@ export default function Hero() {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     }
 
-    // Get initials from name
     const getInitials = (name: string) => {
         return name
             .split(' ')
@@ -39,78 +38,81 @@ export default function Hero() {
     }
 
     return (
-        <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 py-20">
-            {/* Animated background gradient orbs */}
+        <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-32 pb-20">
+            {/* Ambient Background Glows */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <div className="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-primary/20 rounded-full blur-[120px] opacity-50 animate-float"></div>
+                <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-accent/20 rounded-full blur-[120px] opacity-50 animate-float" style={{ animationDelay: '-2s' }}></div>
             </div>
 
-            <div className="relative z-10 text-center max-w-5xl mx-auto fade-in">
-                {/* Profile Image - Larger and more prominent */}
+            <div className="relative z-10 text-center max-w-5xl mx-auto reveal">
+                {/* Profile Badge */}
                 <div className="mb-10 inline-block">
-                    <div className="w-40 h-40 md:w-48 md:h-48 rounded-full glass p-1.5 mx-auto hover:scale-105 transition-smooth">
-                        {profile?.avatar_url ? (
-                            <img
-                                src={profile.avatar_url}
-                                alt={profile.full_name}
-                                className="w-full h-full rounded-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-5xl md:text-6xl font-bold text-white">
-                                {profile ? getInitials(profile.full_name) : 'YN'}
-                            </div>
-                        )}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full glass p-1.5 mx-auto transition-transform duration-500 group-hover:scale-[1.02]">
+                            {profile?.avatar_url ? (
+                                <img
+                                    src={profile.avatar_url}
+                                    alt={profile.full_name}
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-4xl md:text-5xl font-bold text-white">
+                                    {profile ? getInitials(profile.full_name) : 'YN'}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
-                {/* Greeting - More subtle */}
-                <div className="mb-6">
-                    <h2 className="text-sm md:text-base text-text-muted uppercase tracking-widest font-medium">
-                        Hi there! I&apos;m
+                {/* Greeting & Name */}
+                <div className="space-y-4 mb-8">
+                    <p className="text-sm md:text-base font-semibold tracking-[0.3em] uppercase text-primary mb-2">
+                        Welcome to my portfolio
+                    </p>
+                    <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-balance">
+                        I&apos;m <span className="gradient-text">{profile?.full_name || 'Your Name'}</span>
+                    </h1>
+                </div>
+
+                {/* Title */}
+                <div className="mb-8">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-text-secondary tracking-tight">
+                        {profile?.title || 'Full Stack Developer'}
                     </h2>
                 </div>
 
-                {/* Name - Better line height */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight px-4">
-                    <span className="gradient-text block">{profile?.full_name || 'Your Name'}</span>
-                </h1>
-
-                {/* Title - Consistent sizing  */}
-                <p className="text-xl sm:text-2xl md:text-3xl font-semibold mb-8 text-white/90">
-                    {profile?.title || 'Full Stack Developer'}
-                </p>
-
-                {/* Tagline - Better readability */}
-                <p className="text-base md:text-lg text-text-secondary max-w-3xl mx-auto mb-14 leading-relaxed px-6">
+                {/* Bio */}
+                <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto mb-12 leading-relaxed text-balance">
                     {profile?.bio || 'I build innovative web applications with modern technologies. Passionate about creating seamless user experiences and scalable solutions.'}
                 </p>
 
-                {/* CTA Buttons - Improved styling and spacing */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 px-4">
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-16">
                     <button
                         onClick={() => scrollToSection('projects')}
-                        className="w-full sm:w-auto min-w-[200px] px-10 py-4 gradient-bg text-white font-semibold rounded-full hover:scale-105 transition-smooth shadow-lg shadow-primary/40 text-base"
+                        className="btn btn-primary btn-lg w-full sm:w-auto min-w-[200px]"
                     >
-                        View My Work
+                        View Projects
                     </button>
                     <button
                         onClick={() => scrollToSection('contact')}
-                        className="w-full sm:w-auto min-w-[200px] px-10 py-4 glass hover:bg-white/10 font-semibold rounded-full transition-smooth border border-white/10 text-base"
+                        className="btn btn-secondary btn-lg w-full sm:w-auto min-w-[200px]"
                     >
                         Get In Touch
                     </button>
                 </div>
 
-                {/* Social Links - Only show if available */}
+                {/* Social Links */}
                 {(profile?.github || profile?.linkedin || profile?.email) && (
-                    <div className="flex gap-4 justify-center mb-16">
+                    <div className="flex gap-6 justify-center mb-16">
                         {profile?.github && (
                             <a
                                 href={profile.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 hover:scale-110 transition-smooth border border-white/5"
+                                className="text-text-secondary hover:text-primary transition-all transform hover:scale-110"
                                 aria-label="GitHub"
                             >
                                 <Github className="w-6 h-6" />
@@ -121,7 +123,7 @@ export default function Hero() {
                                 href={profile.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 hover:scale-110 transition-smooth border border-white/5"
+                                className="text-text-secondary hover:text-primary transition-all transform hover:scale-110"
                                 aria-label="LinkedIn"
                             >
                                 <Linkedin className="w-6 h-6" />
@@ -130,7 +132,7 @@ export default function Hero() {
                         {profile?.email && (
                             <a
                                 href={`mailto:${profile.email}`}
-                                className="w-14 h-14 glass rounded-full flex items-center justify-center hover:bg-white/10 hover:scale-110 transition-smooth border border-white/5"
+                                className="text-text-secondary hover:text-primary transition-all transform hover:scale-110"
                                 aria-label="Email"
                             >
                                 <Mail className="w-6 h-6" />
@@ -140,13 +142,15 @@ export default function Hero() {
                 )}
 
                 {/* Scroll Indicator */}
-                <div className="inline-block">
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:block">
                     <button
                         onClick={() => scrollToSection('about')}
-                        className="animate-bounce p-3 rounded-full glass hover:bg-white/10 transition-smooth border border-white/5"
-                        aria-label="Scroll to about section"
+                        className="group flex flex-col items-center gap-2 text-text-muted hover:text-primary transition-colors"
                     >
-                        <ArrowDown className="w-5 h-5" />
+                        <span className="text-xs font-semibold uppercase tracking-widest">Scroll Down</span>
+                        <div className="w-6 h-10 border-2 border-gray-700 rounded-full flex justify-center p-1">
+                            <div className="w-1 h-2 bg-primary rounded-full animate-bounce"></div>
+                        </div>
                     </button>
                 </div>
             </div>
